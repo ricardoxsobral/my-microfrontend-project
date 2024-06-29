@@ -8,3 +8,9 @@ app.get('/', (req, res) => {
 app.listen(3000, () => {
   console.log('MF_DRAWER running on port 3000');
 });
+
+
+function navigate(action) {
+  console.log(`Navigating to: ${action}`);
+  window.parent.postMessage({ action }, '*');
+}

@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MF Drawer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .nav-item {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <div id="nav">
         <div class="nav-item" onclick="navigate('videos')">Videos</div>
         <div class="nav-item" onclick="navigate('favoritos')">Favoritos</div>
     </div>
+    <script>
+        function navigate(action) {
+            console.log(`Navigating to: ${action}`); // Log de depuração
+            window.parent.postMessage({ action }, '*'); // Envia mensagem para o parent frame
+        }
+    </script>
 </body>
 </html>

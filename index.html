@@ -4,18 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MF Drawer</title>
+    <style>
+        .container {
+            display: flex;
+        }
+        .drawer {
+            width: 20%;
+        }
+        .content {
+            width: 80%;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="drawer">
             <ul>
-                <li><a href="#" onclick="">Vídeos</a></li>
-                <li><a href="#" onclick="">Favoritos</a></li>
+                <li><a href="#" onclick="navigate('videos')">Vídeos</a></li>
+                <li><a href="#" onclick="navigate('favorites')">Favoritos</a></li>
             </ul>
         </div>
         <div class="content">
             <iframe id="content-frame" src="http://localhost:3002" style="width:100%; height:100vh; border:none;"></iframe>
         </div>
     </div>
+
+    <script>
+        function navigate(action) {
+            console.log(`Navigating to: ${action}`);
+            const frame = document.getElementById('content-frame');
+            frame.contentWindow.postMessage({ action }, '*');
+        }
+    </script>
 </body>
 </html>

@@ -4,16 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MF Videos</title>
+    <style>
+        .section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="videos-section" class="section active">
         <input type="text" id="search-input" placeholder="Search for videos">
-        <button onclick="">Search</button>
+        <button onclick="searchVideos()">Search</button>
         <div id="videos-container"></div>
     </div>
     <div id="favorites-section" class="section">
         <h2>Favorites</h2>
         <div id="favorites-container"></div>
     </div>
+
+    <script>
+        async function searchVideos() {
+            const query = document.getElementById('search-input').value;
+            try {
+                const response = await fetch(`http://localhost:3003/search?query=${query}`);
+                const data = await response.json();
+                const container = document.getElementById('videos-container');
+                container.innerHTML = data.items.map(item => `
+                    <div>
+                        <h3>${item.snippet.title}</h3>
+                        <img src="${item.snippet.thumbnails.medium.url}" alt="${item.snippet.title}">
+                        <button onclick="favoriteVideo('${item.id.videoId}', '${item.snippet.title}', '${item.snippet.thumbnails.medium.url}')">Favorite</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+            }
+        }
+
+        function favoriteVideo(videoId, title, thumbnail) {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const video = { videoId, title, thumbnail };
+            const index = favorites.findIndex(fav => fav.videoId === videoId);
+
+            if (index !== -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(video);
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        function loadFavorites() {
+            const container = document.getElementById('favorites-container');
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            container.innerHTML = favorites.map(video => `
+                <div>
+                    <h3>${video.title}</h3>
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                </div>
+            `).join('');
+        }
+
+        window.addEventListener('message', event => {
+            const { action } = event.data;
+            console.log(`Received action: ${action}`);
+            const videosSection = document.getElementById('videos-section');
+            const favoritesSection = document.getElementById('favorites-section');
+
+            if (action === 'videos') {
+                videosSection.classList.add('active');
+                favoritesSection.classList.remove('active');
+            } else if (action === 'favorites') {
+                favoritesSection.classList.add('active');
+                videosSection.classList.remove('active');
+                loadFavorites();
+            }
+        });
+
+        document.getElementById('videos-section').classList.add('active');
+    </script>
 </body>
 </html>
