@@ -34,7 +34,9 @@
                 container.innerHTML = data.items.map(item => `
                     <div>
                         <h3>${item.snippet.title}</h3>
-                        <img src="${item.snippet.thumbnails.medium.url}" alt="${item.snippet.title}">
+                        <div>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                        </div>
                         <button onclick="favoriteVideo('${item.id.videoId}', '${item.snippet.title}', '${item.snippet.thumbnails.medium.url}')">Favorite</button>
                     </div>
                 `).join('');
@@ -63,9 +65,19 @@
             container.innerHTML = favorites.map(video => `
                 <div>
                     <h3>${video.title}</h3>
-                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${video.videoId}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <button onclick="removeFavorite('${video.videoId}')">Remove</button>
                 </div>
             `).join('');
+        }
+
+        function removeFavorite(videoId) {
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            favorites = favorites.filter(video => video.videoId !== videoId);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            loadFavorites();
         }
 
         window.addEventListener('message', event => {
@@ -84,6 +96,7 @@
             }
         });
 
+        // Inicializa a página com a seção de vídeos visível
         document.getElementById('videos-section').classList.add('active');
     </script>
 </body>
