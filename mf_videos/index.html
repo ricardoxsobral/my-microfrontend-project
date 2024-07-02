@@ -11,17 +11,45 @@
         .active {
             display: block;
         }
+        .videos-container,
+        .favorites-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 50px;
+        }
+        .video-item {
+            flex: 1 1 calc(25% - 16px);
+            box-sizing: border-box;
+        }
+        .video-item h3 {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        .video-item iframe {
+            width: 100%;
+            height: 180px;
+        }
+        .star {
+            font-size: 24px;
+            cursor: pointer;
+            color: gray;
+        }
+        .star:hover,
+        .star.active {
+            color: gold;
+        }
     </style>
 </head>
 <body>
     <div id="videos-section" class="section active">
         <input type="text" id="search-input" placeholder="Search for videos">
         <button onclick="searchVideos()">Search</button>
-        <div id="videos-container"></div>
+        <div id="videos-container" class="videos-container"></div>
     </div>
     <div id="favorites-section" class="section">
         <h2>Favorites</h2>
-        <div id="favorites-container"></div>
+        <div id="favorites-container" class="favorites-container"></div>
     </div>
 
     <script>
@@ -32,52 +60,71 @@
                 const data = await response.json();
                 const container = document.getElementById('videos-container');
                 container.innerHTML = data.items.map(item => `
-                    <div>
-                        <h3>${item.snippet.title}</h3>
+                    <div class="video-item">
                         <div>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
                         </div>
-                        <button onclick="favoriteVideo('${item.id.videoId}', '${item.snippet.title}', '${item.snippet.thumbnails.medium.url}')">Favorite</button>
+                        <span class="star" onclick="toggleFavorite('${item.id.videoId}', '${item.snippet.title}', '${item.snippet.thumbnails.medium.url}', this)">&#9733;</span>                    
                     </div>
                 `).join('');
+                updateFavoriteStars();
             } catch (error) {
                 console.error('Error fetching videos:', error);
             }
         }
 
-        function favoriteVideo(videoId, title, thumbnail) {
+        function toggleFavorite(videoId, title, thumbnail, element) {
             const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
             const video = { videoId, title, thumbnail };
             const index = favorites.findIndex(fav => fav.videoId === videoId);
 
             if (index !== -1) {
                 favorites.splice(index, 1);
+                element.classList.remove('active');
             } else {
                 favorites.push(video);
+                element.classList.add('active');
             }
 
             localStorage.setItem('favorites', JSON.stringify(favorites));
+            loadFavorites();
         }
 
         function loadFavorites() {
             const container = document.getElementById('favorites-container');
             const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
             container.innerHTML = favorites.map(video => `
-                <div>
-                    <h3>${video.title}</h3>
+                <div class="video-item">
                     <div>
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/${video.videoId}" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/${video.videoId}" frameborder="0" allowfullscreen></iframe>
                     </div>
-                    <button onclick="removeFavorite('${video.videoId}')">Remove</button>
+                    <span class="star active" onclick="removeFavorite('${video.videoId}', this)">&#9733;</span>
                 </div>
             `).join('');
         }
 
-        function removeFavorite(videoId) {
+        function removeFavorite(videoId, element) {
             let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
             favorites = favorites.filter(video => video.videoId !== videoId);
             localStorage.setItem('favorites', JSON.stringify(favorites));
             loadFavorites();
+            const videos = document.querySelectorAll('#videos-container .star');
+            videos.forEach(star => {
+                if (star.getAttribute('onclick').includes(videoId)) {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function updateFavoriteStars() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const videos = document.querySelectorAll('#videos-container .star');
+            videos.forEach(star => {
+                const videoId = star.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (favorites.some(fav => fav.videoId === videoId)) {
+                    star.classList.add('active');
+                }
+            });
         }
 
         window.addEventListener('message', event => {
