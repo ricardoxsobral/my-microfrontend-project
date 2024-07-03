@@ -3,38 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MF Drawer</title>
+    <title>Index</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
         .container {
             display: flex;
+            justify-content: space-between;
         }
-        .drawer {
+        .frame {
+            height: 100vh;
+            border: none;
+        }
+        .drawer{
             width: 20%;
         }
-        .content {
+        .videos{
             width: 80%;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="drawer">
-            <ul>
-                <li><a href="#" onclick="navigate('videos')">Vídeos</a></li>
-                <li><a href="#" onclick="navigate('favorites')">Favoritos</a></li>
-            </ul>
-        </div>
-        <div class="content">
-            <iframe id="content-frame" src="http://localhost:3002" style="width:100%; height:100vh; border:none;"></iframe>
-        </div>
+        <iframe class="frame drawer" src="mf_drawer/index.html"></iframe>
+        <iframe class="frame videos" src="mf_videos/index.html"></iframe>
     </div>
 
     <script>
-        function navigate(action) {
-            console.log(`Navigating to: ${action}`);
-            const frame = document.getElementById('content-frame');
-            frame.contentWindow.postMessage({ action }, '*');
-        }
+        window.addEventListener('message', event => {
+            const { action } = event.data;
+            console.log(`Received action: ${action}`);
+
+            // Forward message to the other frame
+            const frames = document.querySelectorAll('iframe');
+            frames.forEach(frame => {
+                if (frame.contentWindow !== event.source) {
+                    frame.contentWindow.postMessage({ action }, '*');
+                }
+            });
+        });
     </script>
 </body>
 </html>

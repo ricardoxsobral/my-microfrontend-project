@@ -21,13 +21,23 @@
 <body>
     <div id="nav">
         <div class="nav-item" onclick="navigate('videos')">Videos</div>
-        <div class="nav-item" onclick="navigate('favoritos')">Favoritos</div>
+        <div class="nav-item" onclick="navigate('favorites')">Favoritos (<span id="favorites-count">0</span>)</div>
     </div>
+
     <script>
         function navigate(action) {
             console.log(`Navigating to: ${action}`); // Log de depuração
-            window.parent.postMessage({ action }, '*'); // Envia mensagem para o parent frame
+            window.parent.postMessage({ action }, '*'); // Envia mensagem para o frame pai
         }
+
+        function updateFavoritesCount() {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            document.getElementById('favorites-count').textContent = favorites.length;
+        }
+
+        // Atualiza o contador ao inicializar e sempre que houver mudança nos favoritos
+        updateFavoritesCount();
+        window.addEventListener('storage', updateFavoritesCount);
     </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
             margin-top: 50px;
         }
         .video-item {
-            flex: 1 1 calc(25% - 16px);
+            flex: 1 1 calc(33% - 16px);
             box-sizing: border-box;
         }
         .video-item h3 {
@@ -87,7 +87,7 @@
             }
 
             localStorage.setItem('favorites', JSON.stringify(favorites));
-            loadFavorites();
+            updateFavoritesCount();
         }
 
         function loadFavorites() {
@@ -114,6 +114,7 @@
                     star.classList.remove('active');
                 }
             });
+            updateFavoritesCount();
         }
 
         function updateFavoriteStars() {
