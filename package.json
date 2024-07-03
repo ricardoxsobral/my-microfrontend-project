@@ -5,5 +5,8 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   }
 }
