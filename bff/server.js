@@ -10,7 +10,7 @@ app.use(cors());
 app.get('/search', async (req, res) => {
   const { query } = req.query;
   try {
-    const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=12&key=${apiKey}`);
+    const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=6&key=${apiKey}`);
     res.json(response.data);
   } catch (error) {
     res.status(500).send(error.message);

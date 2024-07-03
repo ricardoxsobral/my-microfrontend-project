@@ -1,0 +1,65 @@
+/* Estilos básicos para dispositivos móveis */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.section {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+.search input, button{
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.videos-container,
+.favorites-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.video-item {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.video-item iframe {
+    width: 100%;
+    height: 180px;
+}
+
+.star {
+    font-size: 24px;
+    cursor: pointer;
+    color: gray;
+}
+
+.star:hover,
+.star.active {
+    color: gold;
+}
+
+/* Ajustes para telas maiores */
+@media (min-width: 768px) {
+    .videos-container,
+    .favorites-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .video-item {
+        flex: 1 1 calc(33% - 16px);
+    }
+}

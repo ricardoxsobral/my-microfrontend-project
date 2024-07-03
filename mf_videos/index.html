@@ -4,47 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MF Videos</title>
-    <style>
-        .section {
-            display: none;
-        }
-        .active {
-            display: block;
-        }
-        .videos-container,
-        .favorites-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 50px;
-        }
-        .video-item {
-            flex: 1 1 calc(33% - 16px);
-            box-sizing: border-box;
-        }
-        .video-item h3 {
-            font-size: 16px;
-            margin: 8px 0;
-        }
-        .video-item iframe {
-            width: 100%;
-            height: 180px;
-        }
-        .star {
-            font-size: 24px;
-            cursor: pointer;
-            color: gray;
-        }
-        .star:hover,
-        .star.active {
-            color: gold;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./src/index.css" />
 </head>
 <body>
     <div id="videos-section" class="section active">
-        <input type="text" id="search-input" placeholder="Search for videos">
-        <button onclick="searchVideos()">Search</button>
+        <div class="search">
+            <input type="text" id="search-input" placeholder="Pesquise por qualquer título">
+            <button onclick="searchVideos()">Pesquisar</button>
+        </div>
         <div id="videos-container" class="videos-container"></div>
     </div>
     <div id="favorites-section" class="section">

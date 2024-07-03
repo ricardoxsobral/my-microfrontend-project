@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.frame {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.drawer {
+    height: 25vh; /* Altura padrão para dispositivos móveis */
+}
+
+.videos {
+    height: 54vh; /* Altura padrão para dispositivos móveis */
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .drawer {
+        width: 20%;
+        height: 88vh; /* Altura padrão para desktops */
+    }
+
+    .videos {
+        width: 80%;
+        height: 88vh; /* Altura padrão para desktops */
+    }
+}
