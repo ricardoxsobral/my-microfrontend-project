@@ -9,9 +9,9 @@ Este projeto contém basicamente 3 aplicações (mf_drawer, mf_videos e bff), ca
 
 Certifique-se de ter instalado o seguinte antes de prosseguir:
 
-- [Documentação do Docker](https://docs.docker.com/)[Node]([https://docs.docker.com/](https://nodejs.org/docs/latest/api/))
-- [Documentação do Docker](https://docs.docker.com/)
-- [Docker Compose]((https://docs.docker.com/compose/))
+- [Node](https://nodejs.org/docs/latest/api/)
+- [Docker](https://docs.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Instruções de Instalação e Uso
 
