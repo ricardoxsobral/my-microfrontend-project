@@ -9,3 +9,16 @@ body {
     border: 1px solid #ddd;
     margin-bottom: 5px;
 }
+
+.favorite{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorite #favorites-count{
+    padding: 5px 10px;
+    background: gold;
+    border-radius: 20px;
+}
